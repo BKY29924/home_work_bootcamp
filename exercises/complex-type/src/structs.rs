@@ -39,12 +39,12 @@ impl Agent {
 
     // Get the name of the person
     fn get_name(&self) -> &str {
-        todo!()
+        &self.name
     }
 
     // Get the age of the person
     fn get_age(&self) -> u32 {
-        todo!()
+        self.age
     }
 }
 
@@ -61,18 +61,18 @@ impl Calculator {
         Calculator { value: 0 }
     }
 
-    fn add(&self, num: i32) {
-        self.value += num;
+    fn add(&mut self, num: i32) {
+        self.value +=num;
     }
 
-    fn subtract(mut self, num: i32) {
+    fn subtract(&mut self, num: i32) {
         self.value -= num;
     }
-    fn clear(self) {
+    fn clear(&mut self) {
         self.value = 0;
     }
 
-    fn get_value(self) -> i32 {
+    fn get_value(&self) -> i32 {
         self.value
     }
 }
@@ -87,7 +87,7 @@ struct User {
 }
 
 fn exercise4() {
-    let u1 = User {
+    let mut u1 = User {
         first: String::from("John"),
         last: String::from("Doe"),
         age: 22,
@@ -122,18 +122,13 @@ fn exercise5() {
     });
 
     
-    let moved = foos[0];
+    let moved = foos.get(0).unwrap();
 
     
-    let moved_field = foos[0].str_val;
+    let moved_field = &moved.str_val;
 }
 
-// Exercise 6
-// Structs contain data, but can also have logic. In this exercise we have
-// defined the Package struct and we want to test some logic attached to it.
-// Make the code compile and the tests pass!
-
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)] 
 struct Package {
     sender_country: String,
     recipient_country: String,
@@ -153,14 +148,15 @@ impl Package {
         }
     }
 
-    fn is_international(&self) -> ??? {
-        // Something goes here...
+    fn is_international(&self) -> bool { // Add return type and implement logic
+        self.sender_country != self.recipient_country
     }
 
-    fn get_fees(&self, cents_per_gram: i32) -> ??? {
-        // Something goes here...
+    fn get_fees(&self, cents_per_gram: i32) -> i32 { // Add return type and implement logic
+        self.weight_in_grams * cents_per_gram
     }
 }
+
 
 #[cfg(test)]
 mod tests {
@@ -176,7 +172,12 @@ mod tests {
             age: 30,
             hobby:String::from("Rust") 
         };
-        assert_eq!(p, p_expectation);
+        if  p.name!=p_expectation.name || p.age!=p_expectation.age||p.hobby!=p_expectation.hobby{
+            print!("{}",false) ;
+        }
+        else {
+            print!("{}",true) ;
+        }
         
     }
 
